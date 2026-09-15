@@ -18,23 +18,51 @@ const projects = [
     featured: true,
 
    
-    liveUrl: "https://myapp.vercel.app",
+    liveUrl: "https://next-js-v2-red.vercel.app/",
     githubUrl: "https://github.com/username/myapp",
   },
 
   {
     number: "02",
     title: "Rental Barang",
-    category: "Management System",
+    category: "Peminjaman Barang",
     image: "/RentalBarang.png",
     description:
       "Sistem management rental barang untuk mengelola data barang secara lebih terstruktur dan mudah digunakan.",
     tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
     featured: true,
 
-    liveUrl: "https://rental-barang.vercel.app",
+    liveUrl: "https://electronic-rental.vercel.app/",
 
-    githubUrl: "https://electronic-rental.vercel.app/",
+    githubUrl: "https://github.com/username/rental-barang",
+  },
+  {
+    number: "03",
+    title: "Manajemen-Siswa",
+    category: "Management System",
+    image: "/image.png",
+    description:
+      "Sistem management siswa untuk mengelola data siswa secara lebih terstruktur dan mudah digunakan.",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    featured: false,
+
+    liveUrl: "https://manajemen-siswa-three.vercel.app/auth/login",
+
+    githubUrl: "https://github.com/username/rental-barang",
+  },
+  {
+    number: "04",
+    title: "Pendeteksi Banjir",
+    category: "Management System",
+    image: "/image.png",
+    description:
+      "Sistem management siswa untuk mengelola data siswa secara lebih terstruktur dan mudah digunakan.",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    featured: false,
+
+    liveUrl: "https://wokwi.com/projects/472103988885097473",
+
+    githubUrl: "https://github.com/username/rental-barang",
   },
 ];
 
@@ -79,7 +107,7 @@ export default function Projects() {
 
           <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
             Some of my{" "}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               recent work.
             </span>
           </h2>
@@ -105,7 +133,7 @@ export default function Projects() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari judul project..."
-              className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-3.5 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/40 focus:bg-blue-500/[0.03]"
+              className="w-full rounded-xl border border-white/10 bg-white/3 py-3.5 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/40 focus:bg-blue-500/3"
             />
           </div>
 
@@ -125,7 +153,7 @@ export default function Projects() {
                 className={`rounded-full border px-4 py-2 text-sm transition-all duration-300 ${
                   filter === category
                     ? "border-blue-400/40 bg-blue-500/15 text-blue-300"
-                    : "border-white/10 bg-white/[0.02] text-slate-500 hover:border-blue-400/20 hover:text-slate-300"
+                    : "border-white/10 bg-white/3 text-slate-500 hover:border-blue-400/20 hover:text-slate-300"
                 }`}
               >
                 {category}
@@ -171,7 +199,7 @@ export default function Projects() {
           </motion.div>
         ) : (
           /* ================= NO RESULT ================= */
-          <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.02] px-6 py-16 text-center">
+          <div className="mt-8 rounded-2xl border border-white/10 bg-white/3 px-6 py-16 text-center">
             <Search
               size={32}
               className="mx-auto text-slate-700"
@@ -210,7 +238,7 @@ export default function Projects() {
               <button
                 type="button"
                 onClick={() => setSelectedProject(null)}
-                className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-400 transition hover:bg-white/10 hover:text-white"
+                className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/3 text-slate-400 transition hover:bg-white/10 hover:text-white"
               >
                 <X size={18} />
               </button>
@@ -264,7 +292,7 @@ export default function Projects() {
                   href={selectedProject.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-white transition hover:scale-[1.02]"
+                  className="flex flex-1 items-center justify-center rounded-xl bg-linear-to-r from-blue-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-white transition hover:scale-[1.02]"
                 >
                   <ExternalLink
                     size={16}
@@ -278,7 +306,7 @@ export default function Projects() {
                   href={selectedProject.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-1 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-5 py-3 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.08] hover:text-white"
+                  className="flex flex-1 items-center justify-center rounded-xl border border-white/10 bg-white/3 px-5 py-3 text-sm font-semibold text-slate-300 transition hover:bg-white/10 hover:text-white"
                 >
                   <GitBranch
                     size={16}

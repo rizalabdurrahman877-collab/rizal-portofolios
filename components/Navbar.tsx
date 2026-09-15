@@ -15,18 +15,45 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
+  const handleNavigation = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    e.preventDefault();
+
+    const targetId = href.replace("#", "");
+    const target = document.getElementById(targetId);
+
+    if (target) {
+      const navbarHeight = 75;
+
+      const targetPosition =
+        target.getBoundingClientRect().top + window.scrollY - navbarHeight;
+
+      window.scrollTo({
+        top: targetPosition,
+        behavior: "smooth",
+      });
+
+      window.history.pushState(null, "", href);
+    }
+
+    setOpen(false);
+  };
+
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7 }}
-      className="fixed left-0 right-0 top-0 z-50 border-b border-white/[0.06] bg-[#050816]/75 backdrop-blur-xl"
+      className="fixed inset-x-0 top-0 z-[9999] w-full border-b border-white/[0.06] bg-[#050816]/90 backdrop-blur-xl"
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
-        {/* Logo */}
+      <nav className="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
+        {/* LOGO */}
         <a
           href="#home"
-          className="text-xl font-bold tracking-tight"
+          onClick={(e) => handleNavigation(e, "#home")}
+          className="relative z-[10000] max-w-[75%] text-base font-bold tracking-tight text-white sm:text-xl"
         >
           Rizal Abdurrakhman Wakhid
           <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
@@ -34,13 +61,14 @@ export default function Navbar() {
           </span>
         </a>
 
-        {/* Desktop Menu */}
-        <div className="hidden items-center gap-8 md:flex">
+        {/* DESKTOP MENU */}
+        <div className="hidden items-center gap-6 md:flex lg:gap-8">
           {links.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="text-sm text-slate-400 transition duration-300 hover:text-white"
+              onClick={(e) => handleNavigation(e, link.href)}
+              className="relative z-[10000] text-sm text-slate-400 transition duration-300 hover:text-white"
             >
               {link.name}
             </a>
@@ -48,45 +76,56 @@ export default function Navbar() {
 
           <a
             href="#contact"
-            className="rounded-full border border-blue-400/20 bg-blue-500/10 px-5 py-2.5 text-sm text-blue-300 transition duration-300 hover:border-blue-400/50 hover:bg-blue-500/20 hover:text-white"
+            onClick={(e) => handleNavigation(e, "#contact")}
+            className="relative z-[10000] rounded-full border border-blue-400/20 bg-blue-500/10 px-5 py-2.5 text-sm text-blue-300 transition duration-300 hover:border-blue-400/50 hover:bg-blue-500/20 hover:text-white"
           >
             Let's Talk
           </a>
         </div>
 
-        {/* Mobile Button */}
+        {/* MOBILE BUTTON */}
         <button
-          onClick={() => setOpen(!open)}
-          className="rounded-lg border border-white/10 bg-white/5 p-2 md:hidden"
-          aria-label="Toggle navigation"
+          type="button"
+          onClick={() => setOpen((prev) => !prev)}
+          className="relative z-[10001] flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white transition hover:bg-white/10 md:hidden"
+          aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={open}
         >
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="border-t border-white/[0.06] bg-[#050816]/95 px-6 md:hidden"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="relative z-[9999] border-t border-white/[0.06] bg-[#050816] md:hidden"
           >
-            <div className="flex flex-col py-6">
-              {links.map((link, index) => (
-                <motion.a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="border-b border-white/[0.05] py-4 text-sm text-slate-300 transition hover:text-blue-400"
+            <div className="mx-auto max-w-7xl px-5 pb-5 sm:px-6">
+              <div className="flex flex-col">
+                {links.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={(e) => handleNavigation(e, link.href)}
+                    className="flex min-h-[52px] items-center border-b border-white/[0.05] py-4 text-sm font-medium text-slate-300 transition-colors duration-200 hover:text-blue-400 active:text-blue-400"
+                  >
+                    {link.name}
+                  </a>
+                ))}
+
+                <a
+                  href="#contact"
+                  onClick={(e) => handleNavigation(e, "#contact")}
+                  className="mt-5 flex min-h-[48px] items-center justify-center rounded-full border border-blue-400/20 bg-blue-500/10 px-5 py-3 text-sm font-medium text-blue-300 transition-colors duration-200 hover:border-blue-400/50 hover:bg-blue-500/20 hover:text-white"
                 >
-                  {link.name}
-                </motion.a>
-              ))}
+                  Let's Talk
+                </a>
+              </div>
             </div>
           </motion.div>
         )}

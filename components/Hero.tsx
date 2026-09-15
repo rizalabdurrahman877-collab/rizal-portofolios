@@ -39,7 +39,7 @@ export default function Hero() {
             setText(currentText.slice(0, text.length + 1));
           }
         },
-        isDeleting ? 45 : 85
+        isDeleting ? 45 : 85,
       );
     }
 
@@ -66,7 +66,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="mb-6 flex min-h-[28px] items-center text-sm uppercase tracking-[0.25em] text-blue-400"
+            className="mb-6 flex min-h-7 items-center text-sm uppercase tracking-[0.25em] text-blue-400"
           >
             <span>{text}</span>
 
@@ -88,7 +88,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="mb-7 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-500/[0.08] px-4 py-2 text-sm text-slate-300 backdrop-blur-xl"
+            className="mb-7 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-500/8 px-4 py-2 text-sm text-slate-300 backdrop-blur-xl"
           >
             <Sparkles size={14} className="text-cyan-400" />
             Creative Web Developer
@@ -102,7 +102,7 @@ export default function Hero() {
             className="max-w-4xl text-5xl font-semibold leading-[1.03] tracking-tight sm:text-6xl lg:text-7xl"
           >
             Creating modern
-            <span className="mt-2 block bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+            <span className="mt-2 block bg-linear-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
               digital experiences.
             </span>
           </motion.h1>
@@ -114,8 +114,8 @@ export default function Hero() {
             transition={{ delay: 0.5, duration: 0.7 }}
             className="mt-8 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg"
           >
-            I design and build modern, responsive websites using
-            Next.js, React, Tailwind CSS, and modern web technologies.
+            I design and build modern, responsive websites using Next.js, React,
+            Tailwind CSS, and modern web technologies.
           </motion.p>
 
           {/* Buttons */}
@@ -127,9 +127,9 @@ export default function Hero() {
           >
             <a
               href="#contact"
-              className="group rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-blue-500/20 transition duration-300 hover:scale-105 hover:shadow-cyan-500/30"
+              className="group rounded-full bg-linear-to-r from-blue-500 to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-blue-500/20 transition duration-300 hover:scale-105 hover:shadow-cyan-500/30"
             >
-              Get In Touch
+              Let's talk.
               <ArrowUpRight
                 size={16}
                 className="ml-2 inline-block transition group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -138,7 +138,7 @@ export default function Hero() {
 
             <a
               href="#projects"
-              className="rounded-full border border-white/10 bg-white/[0.03] px-7 py-3.5 text-sm text-slate-300 backdrop-blur-xl transition duration-300 hover:border-blue-400/40 hover:bg-blue-500/5 hover:text-blue-300"
+              className="rounded-full border border-white/10 bg-white/3 px-7 py-3.5 text-sm text-slate-300 backdrop-blur-xl transition duration-300 hover:border-blue-400/40 hover:bg-blue-500/5 hover:text-blue-300"
             >
               View Projects
             </a>
@@ -166,9 +166,7 @@ export default function Hero() {
                 Education
               </p>
 
-              <p className="mt-2 text-sm text-slate-300">
-                SMKN 1 PASURUAN
-              </p>
+              <p className="mt-2 text-sm text-slate-300">SMKN 1 PASURUAN</p>
             </div>
           </motion.div>
         </div>
@@ -186,7 +184,7 @@ export default function Hero() {
         >
           <div className="relative">
             {/* Glow */}
-            <div className="absolute -inset-8 rounded-[3rem] bg-gradient-to-r from-blue-600/25 via-cyan-400/15 to-blue-600/25 blur-3xl" />
+            <div className="absolute -inset-8 rounded-[3rem] bg-linear-to-r from-blue-600/25 via-cyan-400/15 to-blue-600/25 blur-3xl" />
 
             {/* Decorative circle */}
             <motion.div
@@ -202,16 +200,16 @@ export default function Hero() {
             {/* Image */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="relative overflow-hidden rounded-[2rem] border border-blue-400/20 bg-[#0a1020]/80 p-2 shadow-2xl shadow-blue-500/10 backdrop-blur-xl"
+              className="relative overflow-hidden rounded-4xl border border-blue-400/20 bg-[#0a1020]/80 p-2 shadow-2xl shadow-blue-500/10 backdrop-blur-xl"
             >
-              <div className="overflow-hidden rounded-[1.5rem]">
+              <div className="overflow-hidden rounded-3xl">
                 <Image
                   src="/rizal.jpeg"
                   alt="Rizal"
                   width={500}
                   height={600}
                   priority
-                  className="h-[420px] w-[330px] object-cover transition duration-700 hover:scale-105 sm:h-[500px] sm:w-[390px]"
+                  className="h-105 w-82.5 object-cover transition duration-700 hover:scale-105 sm:h-125 sm:w-97.5"
                 />
               </div>
             </motion.div>

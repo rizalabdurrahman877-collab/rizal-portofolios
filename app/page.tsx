@@ -9,7 +9,7 @@ import Experience from "@/components/Experience";
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#080808] text-white">
+   <main className="min-h-screen bg-[#080808] text-white">
       <Navbar />
       <Hero />
       <TechStack />

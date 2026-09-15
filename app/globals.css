@@ -1105,3 +1105,10 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #2563eb;
 }
+html {
+  scroll-behavior: smooth;
+}
+
+section {
+  scroll-margin-top: 90px;
+}
