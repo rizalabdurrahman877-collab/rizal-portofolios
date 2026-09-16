@@ -53,8 +53,8 @@ const projects = [
   {
     number: "04",
     title: "Pendeteksi Banjir",
-    category: "Management System",
-    image: "/image.png",
+    category: "IOT",
+    image: "/image copy.png",
     description:
       "Sistem management siswa untuk mengelola data siswa secara lebih terstruktur dan mudah digunakan.",
     tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
@@ -145,6 +145,7 @@ export default function Projects() {
               "Featured",
               "Web Application",
               "Management System",
+              "IOT",
             ].map((category) => (
               <button
                 key={category}
