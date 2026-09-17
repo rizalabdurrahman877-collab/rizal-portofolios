@@ -17,7 +17,6 @@ export default function Contact() {
     const email = String(formData.get("email") || "").trim();
     const message = String(formData.get("message") || "").trim();
 
-    // Pastikan semua field terisi
     if (!name || !email || !message) {
       alert("Semua field wajib diisi.");
       return;
@@ -26,7 +25,7 @@ export default function Contact() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/send", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,22 +39,17 @@ export default function Contact() {
 
       const result = await response.json();
 
-      console.log("Response dari server:", result);
-
-      // Kalau API gagal
       if (!response.ok || !result.success) {
         throw new Error(
           result.message || "Gagal mengirim pesan."
         );
       }
 
-      // Berhasil
       alert("Pesan berhasil dikirim! 📩");
 
-      // Kosongkan form
       form.reset();
     } catch (error) {
-      console.error("Gagal mengirim pesan:", error);
+      console.error("CONTACT ERROR:", error);
 
       alert(
         error instanceof Error
@@ -68,22 +62,26 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="relative px-6 py-28 lg:py-36">
+    <section
+      id="contact"
+      className="relative px-6 py-28 lg:py-36"
+    >
       {/* Background Glow */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/10 blur-[150px]" />
 
       <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-2">
-        {/* ================= LEFT ================= */}
+        {/* LEFT */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
         >
           <span className="text-sm font-medium text-blue-400">
             04 — Contact
           </span>
 
-          <h2 className="mt-4 max-w-xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+          <h2 className="mt-4 max-w-xl text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">
             Let's create something{" "}
             <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               together.
@@ -97,9 +95,15 @@ export default function Contact() {
 
           <div className="mt-10 space-y-6">
             {/* Email */}
-            <div className="flex items-center gap-4">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/10">
-                <Mail size={18} className="text-cyan-400" />
+            <a
+              href="mailto:rizalabdurrahman603@gmail.com"
+              className="group flex items-center gap-4"
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/10 transition-all duration-300 group-hover:border-cyan-400/40 group-hover:bg-cyan-400/10">
+                <Mail
+                  size={18}
+                  className="text-cyan-400 transition-transform duration-300 group-hover:scale-110"
+                />
               </div>
 
               <div>
@@ -107,16 +111,19 @@ export default function Contact() {
                   Email
                 </p>
 
-                <p className="mt-1 text-sm text-slate-300">
+                <p className="mt-1 text-sm text-slate-300 transition-colors duration-300 group-hover:text-cyan-300">
                   rizalabdurrahman603@gmail.com
                 </p>
               </div>
-            </div>
+            </a>
 
             {/* Location */}
             <div className="flex items-center gap-4">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/10">
-                <MapPin size={18} className="text-cyan-400" />
+                <MapPin
+                  size={18}
+                  className="text-cyan-400"
+                />
               </div>
 
               <div>
@@ -132,11 +139,12 @@ export default function Contact() {
           </div>
         </motion.div>
 
-        {/* ================= FORM ================= */}
+        {/* FORM */}
         <motion.form
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
           onSubmit={handleSubmit}
           className="rounded-3xl border border-blue-400/10 bg-white/[0.02] p-6 shadow-2xl shadow-blue-500/5 backdrop-blur-xl sm:p-8"
         >
@@ -154,6 +162,7 @@ export default function Contact() {
               name="name"
               type="text"
               required
+              autoComplete="name"
               placeholder="Your name"
               disabled={loading}
               className="mt-2 w-full rounded-xl border border-white/10 bg-black/10 px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-slate-700 focus:border-blue-400/40 focus:bg-blue-500/[0.03] disabled:cursor-not-allowed disabled:opacity-50"
@@ -174,6 +183,7 @@ export default function Contact() {
               name="email"
               type="email"
               required
+              autoComplete="email"
               placeholder="you@example.com"
               disabled={loading}
               className="mt-2 w-full rounded-xl border border-white/10 bg-black/10 px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-slate-700 focus:border-blue-400/40 focus:bg-blue-500/[0.03] disabled:cursor-not-allowed disabled:opacity-50"
@@ -204,9 +214,16 @@ export default function Contact() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 to-cyan-400 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition duration-300 hover:scale-[1.02] hover:shadow-cyan-500/20 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+            className="group mt-6 flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 to-cyan-400 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(34,211,238,0.35)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 disabled:hover:translate-y-0"
           >
-            <Send size={16} className="mr-2" />
+            <Send
+              size={16}
+              className={`mr-2 transition-transform duration-300 ${
+                loading
+                  ? "animate-pulse"
+                  : "group-hover:translate-x-1"
+              }`}
+            />
 
             {loading ? "Mengirim..." : "Send Message"}
           </button>

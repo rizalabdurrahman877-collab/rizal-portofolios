@@ -25,6 +25,51 @@ Website ini digunakan untuk memperkenalkan:
 
 ## Database Yang Digunakan
 
+## Tabel Supabase
+
+Project ini menggunakan tiga tabel utama:
+
+### 1. proyek
+
+| Kolom | Tipe Data |
+|---|---|
+| id | bigint |
+| created_at | timestamp with time zone |
+| judul | text |
+| kategori | text |
+| deskripsi | text |
+| teknologi | text |
+| gambar | text |
+| link | text |
+| featured | boolean |
+
+### 2. skills
+
+| Kolom | Tipe Data |
+|---|---|
+| id | bigint |
+| nama | text |
+| kategori | text |
+| level | integer |
+| created_at | timestamp with time zone |
+
+### 3. pesan_kontak
+
+| Kolom | Tipe Data |
+|---|---|
+| id | bigint |
+| nama | text |
+| email | text |
+| pesan | text |
+| created_at | timestamp with time zone |
+
+## Fitur Tambahan
+
+- Form kontak dengan insert data ke Supabase.
+- Halaman Skills mengambil data dari tabel `skills`.
+- Penanganan kondisi data kosong pada halaman proyek.
+- Supabase Row Level Security (RLS).
+
 Project menggunakan Supabase sebagai database.
 
 ### Nama Tabel
