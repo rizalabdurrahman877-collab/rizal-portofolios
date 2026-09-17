@@ -1,320 +1,392 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, GitBranch, Search, X } from "lucide-react";
-
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ExternalLink, GitBranch, Search, X, Star } from "lucide-react";
 import ProjectCard from "./ProjectCard";
+import { supabase } from "@/lib/supabase";
 
-const projects = [
-  {
-    number: "01",
-    title: "MyApp",
-    category: "Web Application",
-    image: "/MyApp.png",
-    description:
-      "Aplikasi web modern yang dibuat untuk memberikan pengalaman pengguna yang cepat, sederhana, dan responsif.",
-    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Supabase"],
-    featured: true,
+type SupabaseProject = {
+  id: number;
+  created_at: string;
+  judul: string;
+  kategori: string;
+  deskripsi: string;
+  teknologi: string;
+  gambar: string | null;
+  link: string | null;
+  featured: boolean | null;
+};
 
-   
-    liveUrl: "https://next-js-v2-red.vercel.app/",
-    githubUrl: "https://github.com/username/myapp",
-  },
-
-  {
-    number: "02",
-    title: "Rental Barang",
-    category: "Peminjaman Barang",
-    image: "/RentalBarang.png",
-    description:
-      "Sistem management rental barang untuk mengelola data barang secara lebih terstruktur dan mudah digunakan.",
-    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-    featured: true,
-
-    liveUrl: "https://electronic-rental.vercel.app/",
-
-    githubUrl: "https://github.com/username/rental-barang",
-  },
-  {
-    number: "03",
-    title: "Manajemen-Siswa",
-    category: "Management System",
-    image: "/image.png",
-    description:
-      "Sistem management siswa untuk mengelola data siswa secara lebih terstruktur dan mudah digunakan.",
-    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-    featured: false,
-
-    liveUrl: "https://manajemen-siswa-three.vercel.app/auth/login",
-
-    githubUrl: "https://github.com/username/rental-barang",
-  },
-  {
-    number: "04",
-    title: "Pendeteksi Banjir",
-    category: "IOT",
-    image: "/image copy.png",
-    description:
-      "Sistem management siswa untuk mengelola data siswa secara lebih terstruktur dan mudah digunakan.",
-    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-    featured: false,
-
-    liveUrl: "https://wokwi.com/projects/472103988885097473",
-
-    githubUrl: "https://github.com/username/rental-barang",
-  },
-];
+type CardProject = {
+  number: string;
+  title: string;
+  category: string;
+  image: string;
+  description: string;
+  tags: string[];
+  featured: boolean;
+  liveUrl: string;
+  githubUrl: string;
+};
 
 export default function Projects() {
+  const [projects, setProjects] = useState<SupabaseProject[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("All");
-  const [selectedProject, setSelectedProject] =
-    useState<(typeof projects)[number] | null>(null);
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedProject, setSelectedProject] = useState<CardProject | null>(
+    null,
+  );
 
-  // Filter project berdasarkan search + kategori
-  const filteredProjects = projects.filter((project) => {
-    const matchSearch = project.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
-    const matchFilter =
-      filter === "All"
-        ? true
-        : filter === "Featured"
-        ? project.featured
-        : project.category === filter;
+  const fetchProjects = async () => {
+    setLoading(true);
+    setError("");
 
-    return matchSearch && matchFilter;
-  });
+    try {
+      const { data, error: supabaseError } = await supabase
+        .from("proyek")
+        .select(
+          "id, created_at, judul, kategori, deskripsi, teknologi, gambar, link, featured",
+        )
+        .order("id", { ascending: true });
+
+      if (supabaseError) {
+        console.error("SUPABASE ERROR:", supabaseError);
+        console.error("Message:", supabaseError.message);
+        console.error("Details:", supabaseError.details);
+        console.error("Hint:", supabaseError.hint);
+        console.error("Code:", supabaseError.code);
+
+        setError(supabaseError.message || "Gagal mengambil data project");
+        return;
+      }
+
+      setProjects(data || []);
+    } catch (err) {
+      console.error("FETCH PROJECT ERROR:", err);
+      setError("Terjadi kesalahan saat mengambil data project.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const categories = useMemo(() => {
+    const uniqueCategories = Array.from(
+      new Set(projects.map((project) => project.kategori)),
+    ).filter(Boolean);
+
+    return ["All", ...uniqueCategories];
+  }, [projects]);
+
+  const filteredProjects = useMemo(() => {
+    const keyword = search.toLowerCase().trim();
+
+    return projects.filter((project) => {
+      const matchCategory =
+        activeCategory === "All" || project.kategori === activeCategory;
+
+      const matchSearch =
+        !keyword ||
+        project.judul.toLowerCase().includes(keyword) ||
+        project.kategori.toLowerCase().includes(keyword) ||
+        project.deskripsi.toLowerCase().includes(keyword) ||
+        project.teknologi.toLowerCase().includes(keyword);
+
+      return matchCategory && matchSearch;
+    });
+  }, [projects, search, activeCategory]);
+
+  const cardProjects: CardProject[] = filteredProjects.map(
+    (project, index) => ({
+      number: String(index + 1).padStart(2, "0"),
+      title: project.judul,
+      category: project.kategori,
+      image: project.gambar || "/placeholder-project.jpg",
+      description: project.deskripsi,
+      tags: project.teknologi
+        ? project.teknologi
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter(Boolean)
+        : [],
+      featured: project.featured ?? false,
+      liveUrl: project.link || "#",
+      githubUrl: "#",
+    }),
+  );
 
   return (
-    <section
-      id="projects"
-      className="relative px-6 py-28 lg:py-36"
-    >
-      <div className="mx-auto max-w-7xl">
+    <section id="projects" className="relative overflow-hidden py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mb-4 flex items-center gap-3"
+            >
+              <span className="h-px w-10 bg-violet-400" />
+              <span className="text-sm font-medium uppercase tracking-[0.3em] text-violet-300">
+                Portfolio
+              </span>
+            </motion.div>
 
-        {/* ================= HEADER ================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <span className="text-sm font-medium text-blue-400">
-            02 — Projects
-          </span>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl font-bold tracking-tight text-white sm:text-5xl"
+            >
+              Selected{" "}
+              <span className="bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+                Projects
+              </span>
+            </motion.h2>
 
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-            Some of my{" "}
-            <span className="bg-linear-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-              recent work.
-            </span>
-          </h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mt-4 max-w-2xl text-zinc-400"
+            >
+              Beberapa project yang saya kerjakan menggunakan teknologi modern.
+            </motion.p>
+          </div>
 
-          <p className="mt-5 max-w-2xl leading-8 text-slate-500">
-            Beberapa project yang pernah saya buat selama belajar
-            web development dan software engineering.
-          </p>
-        </motion.div>
-
-        {/* ================= SEARCH ================= */}
-        <div className="mt-10 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-
-          {/* Search Input */}
-          <div className="relative w-full lg:max-w-md">
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
-            />
+          {/* Search */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="relative w-full lg:max-w-xs"
+          >
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
 
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Cari judul project..."
-              className="w-full rounded-xl border border-white/10 bg-white/3 py-3.5 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/40 focus:bg-blue-500/3"
+              placeholder="Cari project..."
+              className="w-full rounded-xl border border-white/10 bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-violet-500/50 focus:bg-white/[0.06]"
             />
-          </div>
-
-          {/* ================= FILTER ================= */}
-          <div className="flex flex-wrap gap-2">
-
-            {[
-              "All",
-              "Featured",
-              "Web Application",
-              "Management System",
-              "IOT",
-            ].map((category) => (
-              <button
-                key={category}
-                type="button"
-                onClick={() => setFilter(category)}
-                className={`rounded-full border px-4 py-2 text-sm transition-all duration-300 ${
-                  filter === category
-                    ? "border-blue-400/40 bg-blue-500/15 text-blue-300"
-                    : "border-white/10 bg-white/3 text-slate-500 hover:border-blue-400/20 hover:text-slate-300"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+          </motion.div>
         </div>
 
-        {/* ================= PROJECT COUNT ================= */}
-        <p className="mt-6 text-sm text-slate-600">
-          Menampilkan{" "}
-          <span className="text-slate-400">
-            {filteredProjects.length}
-          </span>{" "}
-          project
-        </p>
+        {/* Categories */}
+        <div className="mb-10 flex flex-wrap gap-2">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                activeCategory === category
+                  ? "bg-violet-500 text-white shadow-lg shadow-violet-500/20"
+                  : "border border-white/10 bg-white/[0.03] text-zinc-400 hover:bg-white/[0.07] hover:text-white"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
 
-        {/* ================= PROJECT GRID ================= */}
-        {filteredProjects.length > 0 ? (
+        {/* Count */}
+        {!loading && !error && (
+          <div className="mb-6 text-sm text-zinc-500">
+            Menampilkan{" "}
+            <span className="font-medium text-zinc-300">
+              {cardProjects.length}
+            </span>{" "}
+            project
+          </div>
+        )}
+
+        {/* Loading */}
+        {loading && (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="h-[420px] animate-pulse rounded-3xl border border-white/10 bg-white/[0.03]"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Error */}
+        {!loading && error && (
+          <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-6 text-center">
+            <p className="text-sm font-medium text-red-400">
+              Gagal mengambil data project
+            </p>
+
+            <p className="mt-2 text-sm text-zinc-500">{error}</p>
+
+            <button
+              onClick={fetchProjects}
+              className="mt-5 rounded-lg bg-white/10 px-4 py-2 text-sm text-white transition hover:bg-white/15"
+            >
+              Coba Lagi
+            </button>
+          </div>
+        )}
+
+        {/* Projects */}
+        {!loading && !error && cardProjects.length > 0 && (
           <motion.div
             layout
-            className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             <AnimatePresence mode="popLayout">
-              {filteredProjects.map((project) => (
+              {cardProjects.map((project) => (
                 <motion.div
-                  key={project.number}
+                  key={project.number + project.title}
                   layout
-                  initial={{ opacity: 0, scale: 0.95 }}
+                  initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.25 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.3 }}
+                  className="cursor-pointer"
                 >
                   <ProjectCard
                     project={project}
-                    onClick={() =>
-                      setSelectedProject(project)
-                    }
+                    onClick={() => setSelectedProject(project)}
                   />
                 </motion.div>
               ))}
             </AnimatePresence>
           </motion.div>
-        ) : (
-          /* ================= NO RESULT ================= */
-          <div className="mt-8 rounded-2xl border border-white/10 bg-white/3 px-6 py-16 text-center">
-            <Search
-              size={32}
-              className="mx-auto text-slate-700"
-            />
+        )}
 
-            <h3 className="mt-4 text-lg font-medium text-slate-300">
+        {/* Empty */}
+        {!loading && !error && cardProjects.length === 0 && (
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] py-20 text-center">
+            <Search className="mx-auto mb-4 h-8 w-8 text-zinc-600" />
+
+            <h3 className="text-lg font-semibold text-white">
               Project tidak ditemukan
             </h3>
 
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-zinc-500">
               Coba gunakan kata kunci atau kategori lain.
             </p>
           </div>
         )}
       </div>
 
-      {/* ================= MODAL ================= */}
+      {/* Modal */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-6 py-10 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedProject(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.25 }}
+              initial={{ opacity: 0, y: 30, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.96 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-white/10 bg-[#080b14] p-6 shadow-2xl sm:p-8"
+              className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-white/10 bg-[#0c0d1b] shadow-2xl"
             >
               {/* Close */}
               <button
-                type="button"
                 onClick={() => setSelectedProject(null)}
-                className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/3 text-slate-400 transition hover:bg-white/10 hover:text-white"
+                className="absolute right-4 top-4 z-10 rounded-full border border-white/10 bg-black/40 p-2 text-zinc-400 backdrop-blur transition hover:text-white"
               >
-                <X size={18} />
+                <X className="h-5 w-5" />
               </button>
 
-              {/* Number */}
-              <span className="text-sm text-blue-400">
-                Project {selectedProject.number}
-              </span>
-
-              {/* Title */}
-              <h3 className="mt-3 pr-12 text-3xl font-semibold text-white">
-                {selectedProject.title}
-              </h3>
-
-              {/* Category */}
-              <p className="mt-2 text-sm text-slate-500">
-                {selectedProject.category}
-              </p>
-
               {/* Image */}
-              <div className="mt-6 overflow-hidden rounded-2xl border border-white/10">
+              <div className="aspect-video overflow-hidden">
                 <img
                   src={selectedProject.image}
                   alt={selectedProject.title}
-                  className="h-64 w-full object-cover"
+                  className="h-full w-full object-cover"
                 />
               </div>
 
-              {/* Description */}
-              <p className="mt-6 leading-7 text-slate-400">
-                {selectedProject.description}
-              </p>
-
-              {/* Tags */}
-              <div className="mt-6 flex flex-wrap gap-2">
-                {selectedProject.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-blue-400/10 bg-blue-500/10 px-3 py-1.5 text-xs text-blue-300"
-                  >
-                    {tag}
+              <div className="p-6 sm:p-8">
+                <div className="mb-3 flex flex-wrap items-center gap-3">
+                  <span className="rounded-full bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-300">
+                    {selectedProject.category}
                   </span>
-                ))}
-              </div>
 
-              {/* Buttons */}
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  {selectedProject.featured && (
+                    <span className="flex items-center gap-1 rounded-full bg-yellow-500/10 px-3 py-1 text-xs font-medium text-yellow-300">
+                      <Star className="h-3 w-3 fill-current" />
+                      Featured
+                    </span>
+                  )}
+                </div>
 
-                {/* Live Demo */}
-                <a
-                  href={selectedProject.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-1 items-center justify-center rounded-xl bg-linear-to-r from-blue-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-white transition hover:scale-[1.02]"
-                >
-                  <ExternalLink
-                    size={16}
-                    className="mr-2"
-                  />
-                  Live Demo
-                </a>
+                <h3 className="text-2xl font-bold text-white sm:text-3xl">
+                  {selectedProject.title}
+                </h3>
 
-                {/* Github */}
-                <a
-                  href={selectedProject.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-1 items-center justify-center rounded-xl border border-white/10 bg-white/3 px-5 py-3 text-sm font-semibold text-slate-300 transition hover:bg-white/10 hover:text-white"
-                >
-                  <GitBranch
-                    size={16}
-                    className="mr-2"
-                  />
-                  Github
-                </a>
+                <p className="mt-4 leading-7 text-zinc-400">
+                  {selectedProject.description}
+                </p>
+
+                {/* Tags */}
+                {selectedProject.tags.length > 0 && (
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {selectedProject.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-zinc-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Buttons */}
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {selectedProject.liveUrl !== "#" && (
+                    <a
+                      href={selectedProject.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-black
+  transition-all duration-300 ease-out
+  hover:-translate-y-1
+  hover:scale-105
+  hover:bg-blue-400
+  hover:shadow-[0_0_25px_rgba(59,130,246,0.5)]
+  active:scale-95"
+                    >
+                      <ExternalLink className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                      Live Demo
+                    </a>
+                  )}
+
+                  {selectedProject.githubUrl !== "#" && (
+                    <a
+                      href={selectedProject.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.08]"
+                    >
+                      <GitBranch className="h-4 w-4" />
+                      GitHub
+                    </a>
+                  )}
+                </div>
               </div>
             </motion.div>
           </motion.div>
