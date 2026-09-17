@@ -1,41 +1,116 @@
-# Rizal Abdurrakhman Wakhid — Portfolio
+# 💻 Portfolio — Rizal Abdurrakhman Wakhid
 
-![Portfolio](https://img.shields.io/badge/Portfolio-Rizal%20Abdurrakhman-black)
-![Next.js](https://img.shields.io/badge/Next.js-Framework-black?logo=next.js)
-![React](https://img.shields.io/badge/React-Library-61DAFB?logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-Language-3178C6?logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-Styling-06B6D4?logo=tailwindcss)
-![Supabase](https://img.shields.io/badge/Supabase-Database-3FCF8E?logo=supabase)
+Website portfolio pribadi yang dibuat untuk menampilkan profil, kemampuan, pengalaman belajar, dan berbagai project yang telah saya kerjakan selama mempelajari **Web Development, UI/UX Design, dan Software Engineering**.
 
-## 🌐 Live Website
-
-Portfolio: https://rizal-portofolio-jet.vercel.app/
+🌐 **Live Website:** https://rizal-portofolios.vercel.app/
 
 ---
 
-## 👋 About Me
+## 👨‍💻 Tentang Project
 
-Hello! I'm **Rizal Abdurrakhman Wakhid**, a Grade 11 Software Engineering (RPL) student at **SMKN 1 Kota Pasuruan**.
+Website ini merupakan portfolio pribadi **Rizal Abdurrakhman Wakhid**, siswa Rekayasa Perangkat Lunak yang memiliki ketertarikan pada pengembangan website, UI/UX, database, dan teknologi web modern.
 
-I'm passionate about building modern, responsive, and user-focused digital experiences.
+Portfolio dibuat dengan konsep **modern, responsif, dan user-friendly**, sehingga dapat digunakan dengan nyaman melalui perangkat desktop maupun smartphone.
 
-My main interests include:
+Website ini digunakan untuk memperkenalkan:
+
+* Profil pribadi
+* Keahlian dan teknologi yang dikuasai
+* Project yang pernah dibuat
+* Pengalaman belajar dan pengembangan aplikasi
+* Kemampuan UI/UX Design
+* Informasi kontak
+
+---
+
+## Database Yang Digunakan
+
+Project menggunakan Supabase sebagai database.
+
+### Nama Tabel
+
+`proyek`
+
+### Struktur Tabel
+
+| Kolom | Tipe Data | Keterangan 
+---------
+ 1.id  bigint  ID project 
+ 2.created_at  timestamp with time zone  Waktu data dibuat 
+ 3.judul  text  Judul project 
+ 4.kategori  text  Kategori project 
+ 5.deskripsi  text  Deskripsi project 
+ 6.teknologi  text  Teknologi yang digunakan 
+ 7.gambar  text  URL gambar project 
+ 8.link  text  Link live demo 
+ 9.featured  boolean  Status project unggulan 
+
+## Supabase
+
+Data project pada halaman `/proyek`
+diambil langsung dari tabel `proyek` di Supabase.
+
+Website tidak lagi menggunakan data statis
+dari `data/proyek.ts`.
+
+## Keamanan
+
+File `.env.local` tidak dimasukkan ke repository
+GitHub dan sudah ditambahkan ke `.gitignore`.
+
+---
+
+## ✨ Fitur Website
+
+### 🏠 1. Hero Section
+
+Bagian utama website yang menampilkan identitas dan fokus sebagai seorang **Creative Web Developer**.
+
+Fitur yang tersedia:
+
+* Nama dan profesi
+* Deskripsi singkat
+* Status ketersediaan project
+* Informasi pendidikan
+* Tombol menuju kontak
+* Tombol melihat project
+* Daftar teknologi yang digunakan
+
+---
+
+### 👤 2. About Me
+
+Menampilkan informasi singkat mengenai profil dan kemampuan dalam bidang teknologi.
+
+Bagian ini menjelaskan fokus pada:
 
 * Web Development
-* Fullstack Development
-* Mobile Development
 * UI/UX Design
+* Fullstack Development
 * Database Development
+* Pengembangan aplikasi modern
 
-I enjoy turning ideas into functional applications while continuously improving my programming, development, and design skills.
+Terdapat juga beberapa kemampuan utama:
+
+**Clean Code**
+
+> Membuat kode yang terstruktur dan mudah dikembangkan.
+
+**Fullstack Apps**
+
+> Mengembangkan aplikasi mulai dari tampilan hingga database.
+
+**Performance**
+
+> Fokus pada website yang cepat, responsif, dan nyaman digunakan.
 
 ---
 
-## 🚀 Technologies
+### 🛠️ 3. Skills
 
-The main technologies and tools I use include:
+Website menampilkan berbagai teknologi dan tools yang dipelajari dan digunakan dalam project.
 
-### Frontend & Web Development
+#### Web Development
 
 * HTML
 * CSS
@@ -44,200 +119,378 @@ The main technologies and tools I use include:
 * React
 * Next.js
 * Tailwind CSS
-* shadcn/ui
 
-### Backend & Database
+#### Database
 
-* Supabase
 * MySQL
+* Supabase
 * XAMPP
 
-### Programming
-
-* JavaScript
-* TypeScript
-* Python
-
-### Design
+#### Design
 
 * Figma
-* Canva
 
 ---
 
-## 📂 Projects
+### 📁 4. Projects
 
-### 1. Management Siswa
+Bagian Projects digunakan untuk menampilkan berbagai project yang pernah dibuat.
 
-A basic web application developed using **Next.js** to explore modern web development concepts.
+Tersedia fitur:
 
-The project focuses on creating a clean and responsive interface while implementing fundamental features and components using Next.js and Tailwind CSS.
+* Daftar project
+* Gambar project
+* Deskripsi project
+* Teknologi yang digunakan
+* Kategori project
+* Status Featured <- [Fitur Terbaru yang Ditambahkan Pada modul 1 Kemarin]
+* Pencarian project <- [Fitur Terbaru yang Ditambahkan Pada modul 2 Kemarin]
+* Filter berdasarkan kategori <- [Fitur Terbaru yang Ditambahkan Pada modul 2 Kemarin]
+* Fitur Tambah Projek dan Bisa otomatis muncul di slide Project yang akan di simpan di Supabase
 
-**Technologies:**
+
+Kategori project:
+
+* All
+* Featured
+* Web Application
+* Management System
+* IoT
+
+#### Project yang Ditampilkan
+
+**MyApp**
+
+Aplikasi web modern yang dibuat dengan fokus pada pengalaman pengguna yang cepat, sederhana, dan responsif.
+
+Teknologi:
 
 * Next.js
+* TypeScript
 * Tailwind CSS
 * Supabase
-* HTML
-
-🔗 **Live Demo:** https://next-js-v2-red.vercel.app/
 
 ---
 
-### 2. Rental Barang
+**Rental Barang**
 
-A web-based rental management system designed to manage products, customers, rental transactions, and other rental activities efficiently.
+Sistem management rental barang untuk membantu mengelola data barang secara lebih terstruktur dan mudah digunakan.
 
-**Technologies:**
+Teknologi:
 
 * Next.js
+* React
 * TypeScript
-* Supabase
-
-🔗 **Live Demo:** https://electronic-rental.vercel.app/
+* Tailwind CSS
 
 ---
-### 3. Manajemen Siswa
 
-A student management system featuring a dashboard, classes, students, and violations.
+**Manajemen-Siswa**
 
-**Technologies:**
+Sistem management siswa yang digunakan untuk mengelola data siswa secara lebih terstruktur.
+
+Teknologi:
 
 * Next.js
+* React
 * TypeScript
-* Supabase
-
-🔗 **Live Demo:** https://manajemen-siswa-three.vercel.app/dashboard
+* Tailwind CSS
 
 ---
 
-## 💼 Experience
+**Pendeteksi Banjir**
 
-### Software Engineering Student
+Project berbasis IoT yang dibuat sebagai salah satu project pengembangan sistem monitoring.
 
-**SMKN 1 Kota Pasuruan**
+Kategori:
 
-Currently studying Software Engineering with a focus on:
-
-* Web development
-* Programming fundamentals
-* Database management
-* Software development
-* Frontend development
-* UI/UX design
-
-Technologies learned:
-
-`Python` `HTML` `CSS` `MySQL` `JavaScript`
+* IoT
 
 ---
 
-### Web Development & Programming
+### 🎓 5. Experience
 
-**SMKN 1 & UBIG**
+Bagian Experience menampilkan perjalanan pembelajaran dan pengembangan kemampuan dalam bidang programming.
 
-Learning and applying modern web development technologies, including:
+#### Software Engineering Student
+
+**SMKN 1 PASURUAN**
+
+Mempelajari dasar pemrograman, pengembangan website, database, dan pembuatan aplikasi.
+
+Teknologi yang dipelajari:
 
 * HTML
 * CSS
 * JavaScript
+* MySQL
+
+---
+
+#### Web Development
+
+Mengembangkan berbagai website sebagai bagian dari pembelajaran dan pengembangan kemampuan web development.
+
+Teknologi:
+
 * Next.js
-* Tailwind CSS
+* React
 * TypeScript
-
-I am also developing programming fundamentals with Python, including variables, conditions, loops, functions, and data structures.
-
----
-
-### UI/UX Design Exploration
-
-Exploring UI/UX design through personal projects and digital product concepts.
-
-My focus includes:
-
-* Clean interfaces
-* Intuitive user flows
-* Responsive layouts
-* Consistent visual systems
-* User experience
-
-Main tool:
-
-`Figma`
+* Tailwind CSS
 
 ---
 
-### Programming & Database Development
+#### UI/UX Design Exploration
 
-Developing programming and database skills through school assignments and application projects.
+Mengeksplorasi desain interface modern, responsive layout, dan pengalaman pengguna menggunakan Figma.
 
-Experience includes:
+---
 
-* CRUD operations
-* Database relationships
+#### Database Development
+
+Mempelajari pengelolaan database dan integrasi database dengan aplikasi web.
+
+Materi yang dipelajari:
+
+* CRUD
+* Relasi database
 * MySQL
 * Supabase
 * XAMPP
-* JavaScript
-* Python
 
 ---
 
-### Creative & Media Experience
+### 📩 6. Contact
 
-Participating in creative and digital media activities involving:
+Bagian Contact digunakan agar pengunjung dapat menghubungi saya untuk pertanyaan, diskusi, atau project.
 
-* Graphic design
-* Visual communication
-* Content creation
-* Digital projects
+Form contact memiliki beberapa input:
 
-Tools:
+* Nama
+* Email
+* Pesan
 
-`Canva` `Figma`
-
----
-
-## 🎯 Goals
-
-My goal is to continue improving my skills in software development and become a professional developer capable of creating useful, modern, and user-friendly applications.
-
-I am especially interested in:
-
-* Fullstack Web Development
-* Modern JavaScript Frameworks
-* UI/UX Design
-* Database Development
-* Mobile Development
+Website juga menampilkan informasi lokasi dan alamat email untuk komunikasi.
 
 ---
 
-## 📞 Contact
+## 🎨 Desain & UI/UX
 
-**Email:** [rizalabdurrahman603@gmail.com](mailto:rizalabdurrahman603@gmail.com)
+Website menggunakan konsep desain modern dengan fokus pada:
 
-**Phone:** +62 852 3639 0348
-
-**Location:** Indonesia
-
----
-
-## 🌍 Portfolio
-
-Visit my portfolio website:
-
-https://rizal-portofolio-jet.vercel.app/
+* Clean interface
+* Responsive design
+* Modern typography
+* Minimalist layout
+* User-friendly navigation
+* Konsistensi komponen
+* Tampilan yang nyaman di desktop dan mobile
 
 ---
 
-## ⭐ About This Project
+## 📱 Responsive Design
 
-This portfolio website was created to showcase my development journey, technical skills, projects, experience, and contact information.
+Website dirancang agar dapat digunakan pada berbagai ukuran layar:
 
-The website focuses on a modern and responsive design while presenting my work and experience as a Software Engineering student.
+* 💻 Desktop
+* 💻 Laptop
+* 📱 Smartphone
+* 📟 Tablet
+
+Layout dan komponen akan menyesuaikan ukuran layar sehingga tetap nyaman digunakan.
 
 ---
 
-## 📄 License
+## ⚙️ Teknologi yang Digunakan
 
-© 2026 Rizal Abdurrakhman Wakhid. All rights reserved.
+| Teknologi    | Kegunaan                      |
+| ------------ | ----------------------------- |
+| Next.js      | Framework utama website       |
+| React        | Membangun komponen UI         |
+| TypeScript   | Menambahkan type safety       |
+| Tailwind CSS | Styling dan responsive design |
+| JavaScript   | Logika aplikasi               |
+| Supabase     | Database dan backend          |
+| MySQL        | Pengelolaan database          |
+| Figma        | Perancangan UI/UX             |
+| Vercel       | Deployment website            |
+
+---
+
+## 🚀 Menjalankan Project Secara Lokal
+
+Clone repository terlebih dahulu:
+
+```bash
+git clone https://github.com/USERNAME/REPOSITORY.git
+```
+
+Masuk ke folder project:
+
+```bash
+cd nama-project
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Jalankan development server:
+
+```bash
+npm run dev
+```
+
+Kemudian buka:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## 🔐 Environment Variables
+
+Jika project menggunakan Supabase atau layanan eksternal lainnya, buat file:
+
+```text
+.env.local
+```
+
+Contoh:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+> ⚠️ Jangan memasukkan file `.env.local` ke repository GitHub karena dapat berisi informasi konfigurasi yang bersifat pribadi.
+
+Tambahkan `.env.local` ke `.gitignore`:
+
+```gitignore
+.env.local
+.env
+```
+
+---
+
+## 📦 Build untuk Production
+
+Untuk membuat build production:
+
+```bash
+npm run build
+```
+
+Kemudian jalankan:
+
+```bash
+npm start
+```
+
+---
+
+## ☁️ Deployment
+
+Project dapat di-deploy menggunakan **Vercel**.
+
+Alur deployment:
+
+```text
+GitHub Repository
+        ↓
+     Vercel
+        ↓
+Production Build
+        ↓
+Portfolio Website
+```
+
+Website portfolio saat ini tersedia secara online melalui:
+
+**https://rizal-portofolios.vercel.app/**
+
+---
+
+## 📂 Struktur Project
+
+Contoh struktur project:
+
+```text
+portfolio/
+├── app/
+│   ├── page.tsx
+│   ├── layout.tsx
+│   └── globals.css
+│
+├── components/
+│   └── portfolio-page.tsx
+│
+├── public/
+│   ├── images/
+│   └── ...
+│
+├── lib/
+│   └── ...
+│
+├── .env.local
+├── .gitignore
+├── package.json
+├── tsconfig.json
+├── next.config.ts
+└── README.md
+```
+
+---
+
+## 🎯 Tujuan Project
+
+Portfolio ini dibuat dengan beberapa tujuan:
+
+1. Memperkenalkan diri sebagai Web Developer.
+2. Menampilkan kemampuan dalam pengembangan website.
+3. Mendokumentasikan project yang telah dibuat.
+4. Menampilkan pengalaman belajar di bidang Software Engineering.
+5. Menjadi media untuk memperkenalkan kemampuan UI/UX dan database.
+6. Menjadi portfolio yang dapat dikembangkan seiring bertambahnya pengalaman.
+
+---
+
+## 📈 Pengembangan Selanjutnya
+
+Beberapa fitur yang dapat dikembangkan pada versi berikutnya:
+
+* [ ] Dark/Light Mode
+* [ ] Animasi yang lebih interaktif
+* [ ] Detail halaman setiap project
+* [ ] Blog atau artikel teknologi
+* [ ] CMS untuk mengelola project
+* [ ] Integrasi database Supabase
+* [ ] Sistem contact form yang terhubung ke email
+* [ ] Dashboard untuk mengelola portfolio
+* [ ] SEO yang lebih optimal
+* [ ] Peningkatan performa dan accessibility
+
+---
+
+## 👨‍🎓 Developer
+
+**Rizal Abdurrakhman Wakhid**
+
+Software Engineering Student
+SMKN 1 PASURUAN
+
+### Skills
+
+`HTML` `CSS` `JavaScript` `TypeScript` `React` `Next.js` `Tailwind CSS` `MySQL` `Supabase` `Figma`
+
+---
+
+## 📄 Lisensi
+
+Project ini merupakan portfolio pribadi dan dibuat untuk kebutuhan pembelajaran, dokumentasi project, serta pengembangan kemampuan di bidang teknologi.
+
+© 2026 Rizal Abdurrakhman Wakhid. All Rights Reserved.
